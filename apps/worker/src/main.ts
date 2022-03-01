@@ -9,8 +9,8 @@ async function bootstrap() {
       // Setup communication protocol here
     },
   );
-  app.listen(async () => {
-    console.log('Microservice is listening');
-  });
+  await app.listen();
+  console.log('Microservice is listening');
 }
+
 bootstrap();
