@@ -18,9 +18,6 @@
     "start:worker": "nest start worker",
     "test": "run-p -l test:unit test:e2e:*",
     "test:cov": "jest --coverage",
-    "test:e2e": "run-p -l test:e2e:**",
-    "test:e2e:data-stream": "jest --config ./apps/data-streams/test/jest-e2e.json",
-    "test:e2e:worker": "jest --config ./apps/worker/test/jest-e2e.json",
     "test:unit": "jest",
     "test:watch": "jest --watch"
   },
