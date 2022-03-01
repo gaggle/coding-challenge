@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import { WorkerService } from './worker.service';
 
 @Controller()
@@ -10,20 +10,23 @@ export class WorkerController {
   handleGetStatus():
     | {
         interval?: never;
-        nextCheck?: never;
-        status: 'paused';
+        state: 'stopped';
       }
     | {
         interval: number;
-        nextCheck: number;
-        status: 'ok';
+        state: 'running';
       } {
-    this.workerService.getHello();
-    return { status: 'paused' };
+    console.debug('WorkerController#handleGetStatus');
+    return this.workerService.getStatus();
   }
 
-  @MessagePattern('setInterval')
-  handleSetInterval(): void {
-    this.workerService.getHello();
+  @EventPattern('setInterval')
+  handleSetInterval({ ms }: { ms: number | null }): void {
+    console.debug('WorkerController#handleSetInterval', { ms });
+    if (ms) {
+      this.workerService.startFetching(ms);
+    } else {
+      this.workerService.stopFetching();
+    }
   }
 }

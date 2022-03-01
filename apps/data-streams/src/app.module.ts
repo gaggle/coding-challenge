@@ -3,6 +3,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
 import { AppResolvers } from './app.resolvers';
 import { AppService } from './app.service';
 
@@ -22,6 +23,7 @@ import { AppService } from './app.service';
       // ↑ sort types lexicographically (instead of the order they're included in)
     }),
   ],
+  controllers: [AppController],
   providers: [AppService, AppResolvers],
 })
 export class AppModule {}

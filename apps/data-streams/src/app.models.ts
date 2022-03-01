@@ -5,15 +5,18 @@ export class WorkerStatus {
   @Field(() => Int, { nullable: true })
   interval?: number;
 
-  @Field(() => Int, { nullable: true })
-  nextCheck?: number;
-
   @Field()
-  status: 'paused' | 'ok';
+  state: 'running' | 'stopped';
 }
 
 @ObjectType()
 export class DataStreamsData {
-  @Field(() => [Int])
-  data: Array<number>;
+  @Field(() => [DataElement])
+  data: Array<DataElement>;
+}
+
+@ObjectType()
+class DataElement {
+  @Field()
+  foo: 'bar';
 }

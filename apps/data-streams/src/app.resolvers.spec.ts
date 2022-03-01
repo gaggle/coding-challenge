@@ -11,7 +11,7 @@ describe('AppResolvers', () => {
   let app: INestApplication;
   let appService: MockProxy<AppService>;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     appService = mock<AppService>();
 
     const module: TestingModule = await Test.createTestingModule({
@@ -35,24 +35,24 @@ describe('AppResolvers', () => {
     await app.init();
   });
 
-  afterAll(() => app.close());
-
-  afterEach(() => mockReset(appService));
+  afterEach(async () => {
+    mockReset(appService);
+    await app.close();
+  });
 
   it('should respond with Worker status', () => {
-    appService.getWorkerStatus.mockResolvedValue({ status: 'paused' });
+    appService.getWorkerStatus.mockResolvedValue({ state: 'stopped' });
 
     return request(app.getHttpServer())
       .post('/graphql')
       .send({
-        query: 'query { workerStatus { interval, nextCheck, status } }',
+        query: 'query { status { interval, state } }',
       })
       .expect({
         data: {
-          workerStatus: {
+          status: {
             interval: null,
-            nextCheck: null,
-            status: 'paused',
+            state: 'stopped',
           },
         },
       })
@@ -63,19 +63,18 @@ describe('AppResolvers', () => {
   it('should set Worker to fetch data on an interval', () => {
     appService.getWorkerStatus.mockResolvedValue({
       interval: 1000,
-      nextCheck: Date.now() + 1000,
-      status: 'ok',
+      state: 'running',
     });
 
     return request(app.getHttpServer())
       .post('/graphql')
       .send({
-        query: 'mutation { startFetchingData(interval: 1000) { status } }',
+        query: 'mutation { startFetchingData(frequencyMs: 1000) { state } }',
       })
       .expect({
         data: {
           startFetchingData: {
-            status: 'ok',
+            state: 'running',
           },
         },
       })
@@ -87,17 +86,16 @@ describe('AppResolvers', () => {
   });
 
   it('should fetch data stored on DataStreams', () => {
-    appService.getData.mockResolvedValue([1, 2]);
-
+    appService.getData.mockReturnValue([{ foo: 'bar' }]);
     return request(app.getHttpServer())
       .post('/graphql')
       .send({
-        query: 'query { dataStreams { data } }',
+        query: 'query { getData { data { foo } } }',
       })
       .expect({
         data: {
-          dataStreams: {
-            data: [1, 2],
+          getData: {
+            data: [{ foo: 'bar' }],
           },
         },
       })

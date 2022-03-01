@@ -9,14 +9,32 @@ describe('AppService', () => {
 
   beforeEach(async () => {
     workerClient = mock<ClientProxy>();
-    workerClient.send.mockReturnValue(of('foo'));
     appService = new AppService(workerClient);
   });
 
   describe('#getWorkerStatus', () => {
     it('should call workerClient with getStatus command', () => {
+      workerClient.send.mockReturnValue(of('some-value'));
+
       appService.getWorkerStatus();
       expect(workerClient.send).toHaveBeenCalledWith('getStatus', '');
+    });
+  });
+
+  describe('#setWorkerInterval', () => {
+    it('should call workerClient with getStatus command', () => {
+      workerClient.emit.mockReturnValue(of(undefined));
+
+      appService.setWorkerInterval(1000);
+      expect(workerClient.emit).toHaveBeenCalledWith('setInterval', {
+        ms: 1000,
+      });
+    });
+  });
+
+  describe('#getData', () => {
+    it('should call workerClient with getStatus command', () => {
+      expect(appService.getData()).toEqual([]);
     });
   });
 });
