@@ -9,8 +9,7 @@ export class AppResolvers {
   @Query(() => DataStreamsData)
   async getData(): Promise<DataStreamsData> {
     console.debug('AppResolvers#getData');
-    const data = await this.appService.getData();
-    return { data };
+    return { data: this.appService.getWeatherMeasurements() };
   }
 
   @Query(() => WorkerStatus)

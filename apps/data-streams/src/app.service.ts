@@ -2,10 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { timeout } from 'rxjs/operators';
+import { WeatherMeasurement } from './app.models';
 
 @Injectable()
 export class AppService {
-  private data: Array<{ foo: 'bar' }> = [];
+  private data: Array<WeatherMeasurement> = [];
 
   constructor(
     @Inject('WORKER_SERVICE') private readonly workerClient: ClientProxy,
@@ -30,11 +31,11 @@ export class AppService {
     this.workerClient.emit('setInterval', { ms }).pipe(timeout(5000));
   }
 
-  getData(): Array<{ foo: 'bar' }> {
+  getWeatherMeasurements(): Array<WeatherMeasurement> {
     return this.data;
   }
 
-  addData(data: { foo: 'bar' }) {
+  addWeatherMeasurement(data: WeatherMeasurement) {
     this.data.push(data);
   }
 }

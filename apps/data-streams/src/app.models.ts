@@ -11,12 +11,21 @@ export class WorkerStatus {
 
 @ObjectType()
 export class DataStreamsData {
-  @Field(() => [DataElement])
-  data: Array<DataElement>;
+  @Field(() => [WeatherMeasurement])
+  data: Array<WeatherMeasurement>;
 }
 
 @ObjectType()
-class DataElement {
+export class WeatherMeasurement {
   @Field()
-  foo: 'bar';
+  measurement_created: string;
+
+  @Field()
+  request_time: string;
+
+  @Field()
+  source_title: string;
+
+  @Field()
+  wind_direction: string;
 }

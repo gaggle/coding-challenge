@@ -86,20 +86,37 @@ describe('AppResolvers', () => {
   });
 
   it('should fetch data stored on DataStreams', () => {
-    appService.getData.mockReturnValue([{ foo: 'bar' }]);
+    appService.getWeatherMeasurements.mockReturnValue([
+      {
+        measurement_created: '2022-03-03T11:02:43.739373Z',
+        request_time: '2022-03-03T14:19:22.074538+01:00',
+        source_title: 'BBC',
+        wind_direction: 'NNE',
+      },
+    ]);
     return request(app.getHttpServer())
       .post('/graphql')
       .send({
-        query: 'query { getData { data { foo } } }',
+        query:
+          'query { getData { data { measurement_created, request_time, source_title, wind_direction } } }',
       })
       .expect({
         data: {
           getData: {
-            data: [{ foo: 'bar' }],
+            data: [
+              {
+                measurement_created: '2022-03-03T11:02:43.739373Z',
+                request_time: '2022-03-03T14:19:22.074538+01:00',
+                source_title: 'BBC',
+                wind_direction: 'NNE',
+              },
+            ],
           },
         },
       })
-      .expect(() => expect(appService.getData).toHaveBeenCalledWith())
+      .expect(() =>
+        expect(appService.getWeatherMeasurements).toHaveBeenCalledWith(),
+      )
       .expect(200);
   });
 });

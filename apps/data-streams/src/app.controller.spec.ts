@@ -25,9 +25,19 @@ describe('AppController', () => {
 
   describe('#handleData', () => {
     it('should add the data to appService', () => {
-      appController.handleData({ foo: 'bar' });
+      appController.handleData({
+        measurement_created: '2022-03-03T11:02:43.739373Z',
+        request_time: '2022-03-03T14:19:22.074538+01:00',
+        source_title: 'BBC',
+        wind_direction: 'NNE',
+      });
 
-      expect(appService.addData).toHaveBeenCalledWith({ foo: 'bar' });
+      expect(appService.addWeatherMeasurement).toHaveBeenCalledWith({
+        measurement_created: '2022-03-03T11:02:43.739373Z',
+        request_time: '2022-03-03T14:19:22.074538+01:00',
+        source_title: 'BBC',
+        wind_direction: 'NNE',
+      });
     });
   });
 });

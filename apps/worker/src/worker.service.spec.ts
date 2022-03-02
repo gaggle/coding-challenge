@@ -1,14 +1,21 @@
+import { HttpService } from '@nestjs/axios';
 import { ClientProxy } from '@nestjs/microservices';
 import { mock, MockProxy } from 'jest-mock-extended';
 import { WorkerService } from './worker.service';
 
 describe('WorkerService', () => {
-  let workerService: WorkerService;
   let dataStreamClient: MockProxy<ClientProxy>;
+  let httpService: MockProxy<HttpService>;
+  let workerService: WorkerService;
 
   beforeEach(async () => {
     dataStreamClient = mock<ClientProxy>();
-    workerService = new WorkerService(dataStreamClient);
+    httpService = mock<HttpService>();
+    workerService = new WorkerService(dataStreamClient, httpService);
+
+    const mockedIntervalHandler = jest.spyOn(workerService, 'intervalHandler');
+    mockedIntervalHandler.mockResolvedValue();
+    // ↑ #intervalHandler returns void so we resolve to nothing
   });
 
   afterEach(() => {

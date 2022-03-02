@@ -34,7 +34,7 @@ describe('AppService', () => {
 
   describe('#getData', () => {
     it('should call workerClient with getStatus command', () => {
-      expect(appService.getData()).toEqual([]);
+      expect(appService.getWeatherMeasurements()).toEqual([]);
     });
   });
 });

@@ -31,13 +31,13 @@ describe('WorkerController', () => {
   });
 
   describe('#handleSetInterval', () => {
-    it('should start fetching with the passed-in interval', () => {
-      workerController.handleSetInterval({ ms: 1000 });
+    it('should start fetching with the passed-in interval', async () => {
+      await workerController.handleSetInterval({ ms: 1000 });
       expect(workerService.startFetching).toHaveBeenCalledWith(1000);
     });
 
-    it('should stop fetching if given an intervall of null', () => {
-      workerController.handleSetInterval({ ms: null });
+    it('should stop fetching if given an intervall of null', async () => {
+      await workerController.handleSetInterval({ ms: null });
       expect(workerService.stopFetching).toHaveBeenCalledWith();
     });
   });

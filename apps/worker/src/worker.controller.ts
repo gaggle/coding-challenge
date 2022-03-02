@@ -21,10 +21,10 @@ export class WorkerController {
   }
 
   @EventPattern('setInterval')
-  handleSetInterval({ ms }: { ms: number | null }): void {
+  async handleSetInterval({ ms }: { ms: number | null }): Promise<void> {
     console.debug('WorkerController#handleSetInterval', { ms });
     if (ms) {
-      this.workerService.startFetching(ms);
+      await this.workerService.startFetching(ms);
     } else {
       this.workerService.stopFetching();
     }
