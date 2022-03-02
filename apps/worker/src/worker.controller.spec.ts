@@ -14,9 +14,9 @@ describe('WorkerController', () => {
     workerController = app.get<WorkerController>(WorkerController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(workerController.handleHello()).toBe('Hello World!');
+  describe('#handleGetStatus', () => {
+    it('should return a status object', () => {
+      expect(workerController.handleGetStatus()).toEqual({ status: 'paused' });
     });
   });
 });

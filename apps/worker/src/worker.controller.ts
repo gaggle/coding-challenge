@@ -6,8 +6,24 @@ import { WorkerService } from './worker.service';
 export class WorkerController {
   constructor(private readonly workerService: WorkerService) {}
 
-  @MessagePattern('hello')
-  handleHello(): string {
-    return this.workerService.getHello();
+  @MessagePattern('getStatus')
+  handleGetStatus():
+    | {
+        interval?: never;
+        nextCheck?: never;
+        status: 'paused';
+      }
+    | {
+        interval: number;
+        nextCheck: number;
+        status: 'ok';
+      } {
+    this.workerService.getHello();
+    return { status: 'paused' };
+  }
+
+  @MessagePattern('setInterval')
+  handleSetInterval(): void {
+    this.workerService.getHello();
   }
 }
