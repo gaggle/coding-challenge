@@ -1,6 +1,9 @@
-import { Module } from '@nestjs/common';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AppController } from './app.controller';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+import { Module } from '@nestjs/common';
+import { AppResolvers } from './app.resolvers';
 import { AppService } from './app.service';
 
 @Module({
@@ -12,8 +15,13 @@ import { AppService } from './app.service';
         options: { port: 3001 },
       },
     ]),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(__dirname, 'schema.gql'),
+      sortSchema: true,
+      // ↑ sort types lexicographically (instead of the order they're included in)
+    }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppResolvers],
 })
 export class AppModule {}

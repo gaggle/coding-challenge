@@ -13,10 +13,10 @@ describe('AppService', () => {
     appService = new AppService(workerClient);
   });
 
-  describe('#getHello', () => {
-    it('should call workerClient with hello command', () => {
-      appService.getHello();
-      expect(workerClient.send).toHaveBeenCalledWith('hello', '');
+  describe('#getWorkerStatus', () => {
+    it('should call workerClient with getStatus command', () => {
+      appService.getWorkerStatus();
+      expect(workerClient.send).toHaveBeenCalledWith('getStatus', '');
     });
   });
 });
