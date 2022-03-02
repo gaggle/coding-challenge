@@ -16,9 +16,8 @@
     "start": "run-p -l start:**",
     "start:data-stream": "nest start",
     "start:worker": "nest start worker",
-    "test": "run-p -l test:unit test:e2e:*",
+    "test": "jest",
     "test:cov": "jest --coverage",
-    "test:unit": "jest",
     "test:watch": "jest --watch"
   },
   "dependencies": {

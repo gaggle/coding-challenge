@@ -16,7 +16,7 @@ describe('WorkerController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(workerController.getHello()).toBe('Hello World!');
+      expect(workerController.handleHello()).toBe('Hello World!');
     });
   });
 });
